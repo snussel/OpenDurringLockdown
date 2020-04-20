@@ -1,0 +1,150 @@
+﻿@page
+@model ToledoOpenDurringVirus.Pages.Location.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.LocationTb.Name)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationTb.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationTb.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationTb.FullMenu)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.LocationTb.FullMenu ? "Full": "Partial or Special")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationTb.HasSpecials)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.LocationTb.HasSpecials)
+            {
+                <i class="far fa-thumbs-up fa-2x"></i>
+            }
+            else
+            {
+                <i class="far fa-thumbs-down fa-2x"></i>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Social Links
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.LocationTb.FaceBookId != "")
+            {
+                <a href="https://www.facebook.com/@Model.LocationTb.FaceBookId" target="_blank"><i class="fab fa-facebook-square fa-2x"></i></a>
+            }
+            @if (Model.LocationTb.TwitterId != null && Model.LocationTb.TwitterId != "")
+            {
+                <a href="https://twitter.com/@Model.LocationTb.TwitterId" target="_blank"><i class="fab fa-twitter-square fa-2x"></i></a>
+            }
+            @if (Model.LocationTb.InstaGramID != null && Model.LocationTb.InstaGramID != "")
+            {
+                <a href="https://instagram.com/@Model.LocationTb.InstaGramID" target="_blank"><i class="fab fa-instagram-square fa-2x"></i></a>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationTb.WebSiteUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Model.LocationTb.WebSiteUrl" target="_blank"> Link  <sup><i class="fas fa-external-link-alt fa-xs"></i></sup> </a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationTb.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.LocationTb.Email != null && Model.LocationTb.Email != "")
+            {
+                <a href="mailto:@Model.LocationTb.Email">Send Email <i class="fas fa-at fa-2x"></i></a>
+            }
+            else
+            {
+                <text>No Email found</text>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationTb.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Convert.ToInt64(Model.LocationTb.Phone).ToString("###-###-####")  <a href="tel:@Model.LocationTb.Phone"><i class="fas fa-phone"></i></a>
+        </dd>
+        <dt class="col-sm-2 align-middle">
+            @Html.DisplayNameFor(model => model.LocationTb.Area)
+        </dt>
+        <dd class="col-sm-10 align-middle">
+            <a asp-page="/Area/Details" asp-route-id="@Model.LocationTb.Area.Name" class="btn btn-info">@Html.DisplayFor(model => model.LocationTb.Area.Name) &rArr;</a>
+        </dd>
+        <dt class="col-sm-2 align-middle">
+            @Html.DisplayNameFor(model => model.LocationTb.Type)
+        </dt>
+        <dd class="col-sm-10 align-middle">
+            <a asp-page="/Type/Details" asp-route-id="@Model.LocationTb.Type.Name" class="btn btn-info">@Html.DisplayFor(model => model.LocationTb.Type.Name) &rArr;</a>
+        </dd>
+        <dt class="col-sm-2">
+            Address
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.LocationTb.Address1) @Html.DisplayFor(model => model.LocationTb.Address2) @Html.DisplayFor(model => model.LocationTb.City) @Html.DisplayFor(model => model.LocationTb.State) @Html.DisplayFor(model => model.LocationTb.Zipcode)*@
+
+            <address class="vcard">
+                <span class="adr">
+                    <span class="street-address">@Model.LocationTb.Address1</span>
+                    <span class="locality">@Model.LocationTb.City</span>,
+                    <abbr class="region" title="State">@Model.LocationTb.State</abbr>&nbsp;&nbsp;
+                    <span class="postal-code">@Model.LocationTb.Zipcode</span>
+                    <span class="country-name">USA</span>
+                </span>
+            </address>
+
+
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Open Hours durring lockdown:</h4>
+    @if(Model.openHours.Count != 0)
+    {
+        <ul class="list-group">
+            @foreach(var ci in Model.openHours)
+            {
+                @if (ci.isToday == true)
+                {
+                    <li class="list-group-item list-group-item-success">  
+                        @if (Model.openNow)
+                        {
+                             @ci.listContent
+                        }
+                        else 
+                        { 
+                            <span class="text-danger">@ci.listContent</span>
+                        }
+                    </li>
+                }
+                else
+                {
+                    <li class="list-group-item">@ci.listContent</li>
+                }
+            }            
+        </ul>
+    }
+    else
+    {
+        <p>There are no hours found for this place</p>
+    }
+</div>
+
+
+<div>
+    <a asp-page="/Index">Back to List</a>
+</div>

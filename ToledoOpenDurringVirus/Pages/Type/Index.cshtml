@@ -1,0 +1,43 @@
+﻿@page
+@model ToledoOpenDurringVirus.Pages.Type.IndexModel
+
+@{
+    ViewData["Title"] = "Types";
+}
+
+<h1>List of Location Types</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeLookupTb[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeLookupTb[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeLookupTb[0].Count)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TypeLookupTb) {
+        <tr>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="align-middle">
+                @item.Description.Truncate(50)
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Name" class="btn btn-info">Details &rArr;</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

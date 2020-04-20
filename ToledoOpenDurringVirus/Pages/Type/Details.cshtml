@@ -1,0 +1,86 @@
+﻿@page
+@model ToledoOpenDurringVirus.Pages.Type.DetailsModel
+
+@{
+    ViewData["Title"] = $"{Model.TypeLookupTb.Name} Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Type Lookup</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TypeLookupTb.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TypeLookupTb.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TypeLookupTb.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TypeLookupTb.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="/Index">Back to Home</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+<div>
+    @if (Model.ListOfLocations.Count != 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => Model.ListOfLocations[0].Name)</th>
+                    <th>@Html.DisplayNameFor(m => Model.ListOfLocations[0].AreaId)</th>
+                    <th>@Html.DisplayNameFor(m => Model.ListOfLocations[0].Phone)</th>
+                    <th>External Links</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var current in Model.ListOfLocations)
+                {
+                    <tr>
+                        <td class="align-middle">@Html.DisplayFor(c => current.Name)</td>
+                        <td class="align-middle">@Html.DisplayFor(c => current.Area.Name)</td>
+                        <td class="align-middle">@Convert.ToInt64(current.Phone).ToString("###-###-####") <a href="tel:@current.Phone" data-toggle="tooltip" data-placement="top" title="Call"><i class="fas fa-phone"></i></a></td>
+                        <td class="align-middle">
+                            @if (current.Email != null && current.Email != "")
+                            {
+                                <a href="mailto:@current.Email" target="_blank" data-toggle="tooltip" data-placement="top" title="Email" ><i class="fas fa-at fa-2x"></i></a>
+                            }
+                            @if (current.WebSiteUrl != "")
+                            {
+                                <a href="@current.WebSiteUrl" target="_blank" data-toggle="tooltip" data-placement="top" title="Website"><i class="fas fa-external-link-alt fa-2x"></i></a>
+                            }
+                            @if (current.FaceBookId != "")
+                            {
+                                <a href="https://www.facebook.com/@current.FaceBookId" target="_blank" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fab fa-facebook-square fa-2x"></i></a>
+                            }
+                            @if (current.InstaGramID != null && current.InstaGramID != "")
+                            {
+                                <a href="https://instagram.com/@current.InstaGramID" target="_blank" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="fab fa-instagram-square fa-2x"></i></a>
+                            }
+                            @if (current.TwitterId != null && current.TwitterId != "")
+                            {
+                                <a href="https://twitter.com/@current.TwitterId" target="_blank" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fab fa-twitter-square fa-2x"></i></a>
+                            }
+                        </td>                        
+                        <td class="align-middle"><a asp-page="/Location/Details" asp-route-id="@current.Lid" class="btn btn-info">Details &rArr;</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <hr />
+        <p>There are no locations in this area</p>
+    }
+</div>

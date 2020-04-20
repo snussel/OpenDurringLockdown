@@ -1,0 +1,98 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+<div>
+    <p>Hello all. This page is a centralized location to show all of the <strong>local</strong> business that are still open during this public health issue. It is important that during these times, that we all come together and support each other where possible.</p>
+    <p>Please note, I have no issues with franchises, like J. Alexander’s, TGI Friday’s, McDonald's and so on. However, oftentimes they have massive corporations behind them and are better able to weather the storm.</p>
+    <p>Note: this list is <strong>Incomplete</strong>. Please <a href="mailto:snussel@gmail.com?Subject=Update%20for%20Open%20Resturants" target="_blank" title="Email an Update">email</a> me with any additions or updates to the information presented here.</p>
+    <p>Lastly, please spread the word. We as a community need to show our small businees that we care about them, and that we will still support them through all of this.</p>
+</div>
+
+<div class="container">
+    <h3>View Resturants by area:</h3>
+    <div class="btn-group-sm" role="group">
+        @foreach (var current in Model.ListOfAreas)
+        {
+            <a asp-page="./Area/Details" asp-route-id="@current.Name" class="btn btn-outline-info">@current.Name-@current.Count</a>            
+        }
+    </div>
+</div>
+<br />
+<div class="container">
+    <h3>View Resturants by Type:</h3>
+    <div class="btn-group-sm" role="group">
+        @foreach (var current in Model.ListOfTypes)
+        {
+            <a asp-page="./Type/Details" asp-route-id="@current.Name" class="btn btn-outline-info">@current.Name-@current.Count</a>            
+        }
+    </div>
+</div>
+
+
+<div class="container">
+    <hr />
+    <h3>Full List...So Far</h3>
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.ListOfResturants[0].Name)</th>
+                <th>@Html.DisplayNameFor(m => m.ListOfResturants[0].TypeName)</th>
+                <th>@Html.DisplayNameFor(m => m.ListOfResturants[0].AreaName)</th>
+                <th>Open Now?</th>
+                <th>Flags</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var current in Model.ListOfResturants)
+            {
+                <tr>
+                    <td class="align-middle">@Html.DisplayFor(m => current.Name)</td>
+                    <td class="align-middle">@Html.DisplayFor(m => current.TypeName)</td>
+                    <td class="align-middle">@Html.DisplayFor(m => current.AreaName)</td>
+                    <td class="align-middle">
+                        @if (current.OpenNow == true)
+                        {
+                            <Span class="text-success">Yes</span>
+                        }
+                        else 
+                        {
+                            <span class="text-danger">No</span>
+                        }
+                    </td>
+                    <td class="align-middle">
+                        @if (current.FullMenu)
+                        {
+                            <i class="fas fa-plus-square fa-lg" data-toggle="tooltip" data-placement="top" title="Has a full Menu"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-minus-square fa-lg" data-toggle="tooltip" data-placement="top" title="Has a special or partial Menu"></i>
+                        }
+
+                        @if (current.HasSpecials)
+                        {
+                            <i class="fas fa-plus-square fa-lg" data-toggle="tooltip" data-placement="top" title="Has speical offers durring the lockdown"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-minus-square fa-lg" data-toggle="tooltip" data-placement="top" title="Does not have any lockdown specific specials"></i>
+                        }
+                    </td>
+                    <td class="align-middle"><a asp-page="./Location/details" asp-route-id="@current.LID" class="btn btn-info">Details &rArr;</a></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">There are a total of: @Model.ListOfResturants.Count businesses participating(so far)</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
